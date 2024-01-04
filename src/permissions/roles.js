@@ -4,7 +4,7 @@ const roles = {
     public : {
         permissions : {
             [USER] : {
-                auth : ["login_Customer"],
+                auth : ["login_Customer", "register_Customer", "validateCode_Customer", "forgotPassword_Customer"],
             },
         },
         meta : {
@@ -14,7 +14,9 @@ const roles = {
     },
     customer : {
         permissions : {
-            [USER] : [],
+            [USER] : {
+                auth : ["resetPassword_Customer"],
+            },
         },
         meta : {
             type        : "customer",

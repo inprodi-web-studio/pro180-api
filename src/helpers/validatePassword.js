@@ -2,10 +2,12 @@ const bcrypt = require("bcryptjs");
 
 const { BadRequestError } = require("./errors");
 
-const validatePassword = (password, hash) => {
+const validatePassword = async (password, hash) => {
     const ctx = strapi.requestContext.get();
 
-    if ( bcrypt.compare(password, hash) ) {
+    const isValidPassword = await bcrypt.compareSync( password, hash );
+
+    if ( !isValidPassword ) {
         throw new BadRequestError( "Email / Password dont match", {
             key  : "auth.wrongCredentials",
             path : ctx.request.path, 
