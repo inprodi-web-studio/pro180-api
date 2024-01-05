@@ -30,10 +30,18 @@ const resetPasswordSchema = yup.object().shape({
     passwordConfirm : yup.string().oneOf([yup.ref("password")], "Passwords must match").required("Password confirmation is required"),
 });
 
+const updateProfileSchema = yup.object().shape({
+    name            : yup.string().required("Name is required"),
+    lastName        : yup.string().required("Last name is required"),
+    gender          : yup.string().oneOf(["male", "female", "undefined"]).required("Gender is required"),
+    birthdate       : yup.string().required("Birthdate is required").matches( /^\d{4}-\d{2}-\d{2}$/, "Birthdate must be a valid date" ),
+})
+
 module.exports = {
     validateLogin          : validateYupSchema( loginSchema ),
     validateRegister       : validateYupSchema( registerSchema ),
     validateValidateCode   : validateYupSchema( validateCodeSchema ),
     validateForgotPassword : validateYupSchema( forgotPasswordSchema ),
     validateResetPassword  : validateYupSchema( resetPasswordSchema ),
+    validateUpdateProfile  : validateYupSchema( updateProfileSchema ),
 };

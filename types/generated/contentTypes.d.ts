@@ -806,6 +806,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     phone: Attribute.String;
     uuid: Attribute.String;
     customerInfo: Attribute.Component<'customer.customer-info'>;
+    gender: Attribute.String;
+    birthdate: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -16,6 +16,7 @@ const roles = {
         permissions : {
             [USER] : {
                 auth : ["resetPassword_Customer"],
+                user : ["updateProfile_Customer"],
             },
         },
         meta : {

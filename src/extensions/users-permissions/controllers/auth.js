@@ -29,23 +29,23 @@ module.exports = (plugin) => {
             password,
         } = data;
 
-        const user = await findOneByAny(email, USER, "email");
+        const customer = await findOneByAny(email, USER, "email");
 
-        await plugin.services.validateUserContext(password, user);
+        await plugin.services.validateUserContext(password, customer);
 
         const TOKEN = generateToken({
-            id : user.id,
+            id : customer.id,
         });
 
         return {
-            token : TOKEN,
-            user  : {
-                uuid     : user.uuid,
-                name     : user.name,
-                lastName : user.lastName,
-                email    : user.email,
-                phone    : user.phone,
-            },
+            token     : TOKEN,
+            uuid      : customer.uuid,
+            name      : customer.name,
+            lastName  : customer.lastName,
+            email     : customer.email,
+            phone     : customer.phone,
+            gender    : customer.gender,
+            birthdate : customer.birthdate,
         };
     };
 
@@ -68,7 +68,7 @@ module.exports = (plugin) => {
 
         const code = generateRandomCode(4);
 
-        const newUser = await strapi.entityService.create( USER, {
+        const newCustomer = await strapi.entityService.create( USER, {
             data : {
                 ...data,
                 username          : email,
@@ -83,9 +83,9 @@ module.exports = (plugin) => {
         await plugin.services.sendCodeEmail(email, code, "register");
 
         return {
-            uuid     : newUser.uuid,
-            name     : newUser.name,
-            lastName : newUser.lastName,
+            uuid     : newCustomer.uuid,
+            name     : newCustomer.name,
+            lastName : newCustomer.lastName,
         };
     };
 
@@ -100,6 +100,13 @@ module.exports = (plugin) => {
 
         const customer = await findOneByUuid( uuid, USER );
 
+        if ( event === "register" && customer.confirmed ) {
+            throw new BadRequestError("User already confirmed", {
+                key : "auth.alreadyConfirmed",
+                path : ctx.request.path,
+            });
+        }
+
         await plugin.services.validateCode( data, customer );
 
         await strapi.entityService.update( USER, customer.id, {
@@ -112,8 +119,19 @@ module.exports = (plugin) => {
             }
         });
 
+        const TOKEN = generateToken({
+            id : customer.id,
+        });
+
         return {
-            token : generateToken( { id : customer.id } ),
+            token     : TOKEN,
+            uuid      : customer.uuid,
+            name      : customer.name,
+            lastName  : customer.lastName,
+            email     : customer.email,
+            phone     : customer.phone,
+            gender    : customer.gender,
+            birthdate : customer.birthdate,
         };
     };
 
@@ -126,6 +144,20 @@ module.exports = (plugin) => {
 
         const customer = await findOneByAny( email, USER, "email" );
 
+        if ( !customer.confirmed ) {
+            throw new BadRequestError( "Customer has not confirmed his email address.", {
+                key : "auth.notConfirmed",
+                path : ctx.request.path,
+            });
+        }
+
+        if ( customer.blocked ) {
+            throw new BadRequestError( "Customer has been blocked.", {
+                key : "auth.blocked",
+                path : ctx.request.path,
+            });
+        }
+
         const code = generateRandomCode(4);
 
         await strapi.entityService.update( USER, customer.id, {
@@ -137,7 +169,7 @@ module.exports = (plugin) => {
         await plugin.services.sendCodeEmail( email, code, "reset" );
 
         return {
-            message : "ok",
+            uuid : customer.uuid,
         };
     };
 
@@ -149,7 +181,7 @@ module.exports = (plugin) => {
 
         const { password } = data;
 
-        const updatedCustomer = await strapi.entityService.update( USER, customer.id, {
+        await strapi.entityService.update( USER, customer.id, {
             data : {
                 password           : password,
                 resetPasswordToken : null,

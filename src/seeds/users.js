@@ -30,6 +30,8 @@ const generateUsers = async (strapi) => {
                 name      : "Inprodi",
                 lastName  : "Customer",
                 phone     : "3399999999",
+                gender    : "male",
+                birthdate : "2000-01-01",
             },
         });
     }
@@ -48,6 +50,8 @@ const generateUsers = async (strapi) => {
                 name      : faker.person.firstName(),
                 lastName  : faker.person.lastName(),
                 phone     : faker.phone.number(),
+                gender    : faker.helpers.arrayElement(["male", "female", "undefined"]),
+                birthdate : "2000-01-01",
             },
         });
     });
