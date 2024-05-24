@@ -73,23 +73,7 @@
       "type": "string",
       "required": true
     },
-    "phone": {
-      "type": "string",
-      "required": false
-    },
     "uuid": {
-      "type": "string"
-    },
-    "customerInfo": {
-      "displayName": "Customer Info",
-      "type": "component",
-      "repeatable": false,
-      "component": "customer.customer-info"
-    },
-    "gender": {
-      "type": "string"
-    },
-    "birthdate": {
       "type": "string"
     }
   }
