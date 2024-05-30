@@ -362,6 +362,49 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiStatStat extends Schema.CollectionType {
+  collectionName: 'stats';
+  info: {
+    singularName: 'stat';
+    pluralName: 'stats';
+    displayName: 'Stat';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    uuid: Attribute.String;
+    callsMade: Attribute.Integer;
+    callsAnswered: Attribute.Integer;
+    callsInvestment: Attribute.Float;
+    lettersMade: Attribute.Integer;
+    lettersAnswered: Attribute.Integer;
+    lettersInvestment: Attribute.Float;
+    mlsProperties: Attribute.Integer;
+    callsProperties: Attribute.Integer;
+    lettersProperties: Attribute.Integer;
+    mlsOffersMade: Attribute.Integer;
+    lettersOffersMade: Attribute.Integer;
+    callsOffersMade: Attribute.Integer;
+    mlsOffersApproved: Attribute.Integer;
+    lettersOffersApproved: Attribute.Integer;
+    callsOffersApproved: Attribute.Integer;
+    deals: Attribute.Integer;
+    user: Attribute.Relation<
+      'api::stat.stat',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::stat.stat', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::stat.stat', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -780,6 +823,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::stat.stat': ApiStatStat;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;

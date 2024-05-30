@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stats",
+  "info": {
+    "singularName": "stat",
+    "pluralName": "stats",
+    "displayName": "Stat",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "uuid": {
+      "type": "string"
+    },
+    "callsMade": {
+      "type": "integer"
+    },
+    "callsAnswered": {
+      "type": "integer"
+    },
+    "callsInvestment": {
+      "type": "float"
+    },
+    "lettersMade": {
+      "type": "integer"
+    },
+    "lettersAnswered": {
+      "type": "integer"
+    },
+    "lettersInvestment": {
+      "type": "float"
+    },
+    "mlsProperties": {
+      "type": "integer"
+    },
+    "callsProperties": {
+      "type": "integer"
+    },
+    "lettersProperties": {
+      "type": "integer"
+    },
+    "mlsOffersMade": {
+      "type": "integer"
+    },
+    "lettersOffersMade": {
+      "type": "integer"
+    },
+    "callsOffersMade": {
+      "type": "integer"
+    },
+    "mlsOffersApproved": {
+      "type": "integer"
+    },
+    "lettersOffersApproved": {
+      "type": "integer"
+    },
+    "callsOffersApproved": {
+      "type": "integer"
+    },
+    "deals": {
+      "type": "integer"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

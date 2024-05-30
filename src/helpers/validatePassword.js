@@ -9,7 +9,7 @@ const validatePassword = async (password, hash) => {
 
     if ( !isValidPassword ) {
         throw new NotFoundError(`user not found`, {
-            key  : `$user.notFound`,
+            key  : `user.notFound`,
             path : ctx.request.path,
         });
     }
