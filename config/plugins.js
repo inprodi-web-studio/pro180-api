@@ -11,7 +11,7 @@ module.exports = ({ env }) => ({
                 },
             },
             settings : {
-                defaultFrom    : "Albarran <hola@inprodi.com.mx>",
+                defaultFrom    : "Pro180 <hola@inprodi.com.mx>",
                 defaultReplyTo : "hola@inprodi.com.mx",
             },
         },

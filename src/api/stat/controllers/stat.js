@@ -1,4 +1,6 @@
 const { STAT } = require("../../../constants/models");
+const { validatePassword } = require("../../../helpers");
+const { BadRequestError } = require("../../../helpers/errors");
 
 const { createCoreController } = require("@strapi/strapi").factories;
 
@@ -49,5 +51,27 @@ module.exports = createCoreController( STAT, ({ strapi }) => ({
         });
 
         return newStat;
+    },
+
+    async changePassword(ctx) {
+        const { user } = ctx.state;
+        const data = ctx.request.body;
+
+        const currentUser = await strapi.entityService.findOne( "plugin::users-permissions.user", user.id );
+
+         if ( !validatePassword( data.newPassword, currentUser.password ) ) {
+             throw new BadRequestError("Wrong password", {
+                 key : "auth.wrongPassword",
+                 path : ctx.request.path,
+            });
+         }
+
+        const updatedUser = await strapi.entityService.update( "plugin::users-permissions.user", user.id, {
+            data : {
+                password : data.newPassword
+            }
+        });
+
+        return updatedUser;
     },
 }));
