@@ -56,7 +56,7 @@ module.exports = createCoreController( STAT, ({ strapi }) => ({
     async reset(ctx) {
         const { user } = ctx.state;
 
-        const userStats = await strapi.query(STAT).find({
+        const userStats = await strapi.query(STAT).findMany({
             where : {
                 user : user.id
             },
