@@ -53,7 +53,7 @@ module.exports = createCoreController( STAT, ({ strapi }) => ({
         return newStat;
     },
 
-    async delete(ctx) {
+    async reset(ctx) {
         const { user } = ctx.state;
 
         await strapi.query(STAT).deleteMany({
