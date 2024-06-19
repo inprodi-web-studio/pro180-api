@@ -56,11 +56,15 @@ module.exports = createCoreController( STAT, ({ strapi }) => ({
     async reset(ctx) {
         const { user } = ctx.state;
 
-        await strapi.query(STAT).deleteMany({
+        const userStats = await strapi.query(STAT).find({
             where : {
                 user : user.id
             },
         });
+
+        for (const stat of userStats) {
+            await strapi.entityService.delete( STAT, stat.id );
+        }
 
         return {
             status : "success",
