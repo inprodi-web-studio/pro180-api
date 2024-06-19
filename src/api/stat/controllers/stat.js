@@ -53,6 +53,21 @@ module.exports = createCoreController( STAT, ({ strapi }) => ({
         return newStat;
     },
 
+    async delete(ctx) {
+        const { user } = ctx.state;
+
+        await strapi.query(STAT).deleteMany({
+            where : {
+                user : user.id
+            },
+        });
+
+        return {
+            status : "success",
+            message : "All stats have been deleted"
+        };
+    },
+
     async changePassword(ctx) {
         const { user } = ctx.state;
         const data = ctx.request.body;
